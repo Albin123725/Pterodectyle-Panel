@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  # Main Container with Everything
+  distributed-minecraft:
+    build: .
+    container_name: distributed-minecraft
+    restart: unless-stopped
+    environment:
+      - APP_URL=${APP_URL}  # From Render
+      - RENDER_EXTERNAL_URL=${RENDER_EXTERNAL_URL}  # From Render
+    ports:
+      - "80:80"
+      - "25565:25565"
+      - "5000:5000"
+      - "8080:8080"
+    # No volumes - free tier compatible
+    mem_limit: 512m
+    command: >
+      sh -c "
+      echo '=== STARTING DISTRIBUTED MINECRAFT ===' &&
+      echo 'APP_URL: ${APP_URL}' &&
+      echo 'RENDER_EXTERNAL_URL: ${RENDER_EXTERNAL_URL}' &&
+      /start.sh"
